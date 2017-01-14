@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.ui.theme" value="simple" />
+    <!-- 不配置时,Struts会自动为一些html标签添加样式 -->
+	<constant name="struts.action.extension" value="action" />
+	
+	<include file="cn/samoye/test/conf/test-struts.xml"/>
+	<include file="cn/samoye/nsfw/user/conf/user-struts.xml"/>
+</struts>
