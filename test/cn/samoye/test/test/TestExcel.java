@@ -17,14 +17,6 @@ import cn.samoye.core.utils.ExcelUtils;
 import cn.samoye.nsfw.user.bean.ExcelUser;
 
 public class TestExcel {
-	public static void main(String[] args) {
-		ExcelUtils.exportByAnnotation(null, null, ExcelUser.class);
-	}
-	
-	@Test
-	public void test()throws Exception{
-		ExcelUtils.exportByAnnotation(null, null, ExcelUser.class);
-	}
 	@Test
 	public void testExcel()throws Exception{
 		//1.创建工作薄

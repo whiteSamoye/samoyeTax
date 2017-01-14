@@ -1,5 +1,6 @@
 package cn.samoye.nsfw.user.service;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface UserService {
 	User queryUserById(Serializable id);
 	List<User> queryUserList();
 	void exportExcelService(List<User> userList, ServletOutputStream ops);
+	void importExcel(File headImg, String headImgFileName);
+	User queryUserByAccount(User user);
 }

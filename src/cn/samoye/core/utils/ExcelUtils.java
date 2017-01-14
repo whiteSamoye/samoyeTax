@@ -30,37 +30,23 @@ import cn.samoye.nsfw.user.bean.User;
 import cn.samoye.test.utils.PoiUtils;
 
 public class ExcelUtils {
-	public static void exportByAnnotation(List<User> userList, ServletOutputStream ops ,Class<?> clazz){
-		String[] columnNames = null;
-		int columnNameSize = 0;
-		int titleFontSize = 0;
-		String titleName = "";
-		String[] beanPropertyNames = null;
-		ExcelClassAnnotation classAnno = clazz.getAnnotation(ExcelClassAnnotation.class);
-		if(classAnno != null){
-			columnNames = classAnno.columnNames();
-			columnNameSize = classAnno.columnNameSize();
-			titleName = classAnno.titleName();
-			titleFontSize = classAnno.titleFontSize();
-			beanPropertyNames = classAnno.beanPropertyNames();
-		}
+	public static void importExcel(){
 		
+	}
+	public static void exportExcel(List<User> userList, ServletOutputStream ops) {
 		try {
 			//1.创建工作薄对象
-			Workbook wb = PoiUtils.getWorkbookWriter_xls();
-
-			//1.2.创建头标题样式
-			CellStyle titleStyle = PoiUtils.desiginerStyle(wb, true, titleFontSize);
-			//1.3.创建列标题样式
-			CellStyle styel2 = PoiUtils.desiginerStyle(wb, true, columnNameSize);
+			Workbook wb = getWorkbookWriter_xls();
+				//1.1.创建合并单元格对象
+			CellRangeAddress cellRangeAddress = new CellRangeAddress(0, 0, 0, 4);
+				//1.2.创建头标题样式
+			CellStyle titleStyle = desiginerStyle(wb, true, 16);
+				//1.3.创建列标题样式
+			CellStyle styel2 = desiginerStyle(wb, true, 13);
 			//2.创建工作表对象
-			Sheet sheet = wb.createSheet(titleName);
+			Sheet sheet = wb.createSheet("用户列表");
 				//2.1.加载合并单元格
-			//1.1.创建合并单元格对象
-			if(titleName != null && titleName != ""){
-				CellRangeAddress cellRangeAddress = new CellRangeAddress(0, 0, 0, columnNames.length);
-				sheet.addMergedRegion(cellRangeAddress);
-			}
+			sheet.addMergedRegion(cellRangeAddress);
 			//设置默认列宽
 			sheet.setDefaultColumnWidth(23);
 			//3.创建行对象
@@ -68,11 +54,11 @@ public class ExcelUtils {
 			Row titleRow = sheet.createRow(0);
 			Cell titleCell = titleRow.createCell(0);
 			titleCell.setCellStyle(titleStyle);
-			titleCell.setCellValue(titleName);
+			titleCell.setCellValue("用户列表");
 			//创建列标题行
 			//3.2.创建列标题行,并设置列标题
 			Row row2 = sheet.createRow(1);
-			String[] titles = columnNames;//{"用户名","账号","所属部门","性别","电子邮箱"};
+			String[] titles = {"用户名","账号","所属部门","性别","电子邮箱"};
 			for(int i=0;i<titles.length;i++){
 				Cell cell = row2.createCell(i);
 				cell.setCellStyle(styel2);
@@ -80,21 +66,9 @@ public class ExcelUtils {
 			}
 			//4.操作单元格
 			if(userList != null){
-//				String userListJsonString = JSON.toJSONString(userList);
-//				List<Map<String, String>> userListMap = JSON.parseObject(userListJsonString, new TypeReference<List<Map<String,String>>>(){});
 				for (int j=0;j<userList.size();j++) {
 					Row contentRow = sheet.createRow(j+2);
-					for(int k=0;k<columnNames.length;k++){
-						Cell cell0 = contentRow.createCell(k);
-						User user = userList.get(j);
-						Class<? extends User> class1 = user.getClass();
-						String value = "";
-						for(int x =0;x<beanPropertyNames.length;x++){
-							Method method = class1.getMethod("get"+beanPropertyNames[x].substring(0, 1).toUpperCase()+beanPropertyNames[x].substring(1), null);
-							value = (String) method.invoke(class1, null);
-						}
-						cell0.setCellValue(value);
-					}
+					
 					Cell cell0 = contentRow.createCell(0);
 					cell0.setCellValue(userList.get(j).getName());
 					
@@ -114,77 +88,15 @@ public class ExcelUtils {
 			}
 //		输出
 			wb.write(ops);
-			wb.close();
+			closeResource(ops,wb);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public static void Export(List<User> userList, ServletOutputStream ops,String title,String[]columnName,
-			Integer titleFontSize,Integer columnNameSize, String[] beanPropertesNames,
-			HashMap<String,HashMap<String,String>> hashMap) {
-		try {
-			//1.创建工作薄对象
-			Workbook wb = PoiUtils.getWorkbookWriter_xls();
-
-			//1.2.创建头标题样式
-			CellStyle titleStyle = PoiUtils.desiginerStyle(wb, true, titleFontSize);
-			//1.3.创建列标题样式
-			CellStyle styel2 = PoiUtils.desiginerStyle(wb, true, columnNameSize);
-			//2.创建工作表对象
-			Sheet sheet = wb.createSheet(title);
-				//2.1.加载合并单元格
-			//1.1.创建合并单元格对象
-			if(title != null && title != ""){
-				CellRangeAddress cellRangeAddress = new CellRangeAddress(0, 0, 0, columnName.length);
-				sheet.addMergedRegion(cellRangeAddress);
-			}
-			//设置默认列宽
-			sheet.setDefaultColumnWidth(23);
-			//3.创建行对象
-			//3.1创建头标题行,并设置头标题
-			Row titleRow = sheet.createRow(0);
-			Cell titleCell = titleRow.createCell(0);
-			titleCell.setCellStyle(titleStyle);
-			titleCell.setCellValue(title);
-			//创建列标题行
-			//3.2.创建列标题行,并设置列标题
-			Row row2 = sheet.createRow(1);
-			String[] titles = columnName;//{"用户名","账号","所属部门","性别","电子邮箱"};
-			for(int i=0;i<titles.length;i++){
-				Cell cell = row2.createCell(i);
-				cell.setCellStyle(styel2);
-				cell.setCellValue(titles[i]);
-			}
-			//4.操作单元格
-			if(userList != null){
-				String userListJsonString = JSON.toJSONString(userList);
-				List<Map<String, String>> userListMap = JSON.parseObject(userListJsonString, new TypeReference<List<Map<String,String>>>(){});
-				int i =0 ;
-				for (Map<String, String> map : userListMap) {
-					Row contentRow = sheet.createRow(i+2);
-					i ++;
-					int j = 0;
-					for(int k=0;k<beanPropertesNames.length;k++){
-						Cell cell = contentRow.createCell(j);
-						j ++;
-						String value = beanPropertesNames[k];
-						cell.setCellValue(map.get(value));
-						if(hashMap == null){
-						}else{
-							
-						}
-					}
-				}
-			}
-//		输出
-			wb.write(ops);
-			wb.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
+	
+	
+	
 	/**
 	 * 返回工作薄对象,xls创建HSSFWorkbook,xlsx创建XSSFWorkbook
 	 * @return

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -157,6 +158,16 @@ public class UserAction extends ActionSupport {
 		}
 	}
 	
+	public String importExcel(){
+		//判断文件对象是否为null
+		if(headImg != null){
+			//判断导入的是否是excel文件
+			if(headImgFileName.matches("^.+\\.(?i)((xsl)|(xlsx))$")){
+				userService.importExcel(headImg,headImgFileName);
+			}
+		}
+		return "list";
+	}
 	/**
 	 * ---------------------------------数据的封装
 	 */
