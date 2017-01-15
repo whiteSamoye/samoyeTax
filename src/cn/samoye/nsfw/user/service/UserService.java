@@ -17,4 +17,6 @@ public interface UserService {
 	void exportExcelService(List<User> userList, ServletOutputStream ops);
 	void importExcel(File headImg, String headImgFileName);
 	User queryUserByAccount(User user);
+	boolean verifyAccount(String account);
+	List<User> queryUserListByAccountAndId(String account, String id);
 }

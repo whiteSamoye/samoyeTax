@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -135,6 +136,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void importExcel(File headImg, String headImgFileName) {
+		ExcelUtils.importExcel(headImg,headImgFileName,this);
 		try {
 			FileInputStream fis = new FileInputStream(headImg);
 			//1.读取工作薄对象
@@ -197,6 +199,20 @@ public class UserServiceImpl implements UserService {
 
 	public User queryUserByAccount(User user) {
 		return userDao.queryUserByAccount(user);
+	}
+
+	@Override
+	public boolean verifyAccount(String account) {
+		return userDao.verifyAccount(account);
+	}
+
+	@Override
+	public List<User> queryUserListByAccountAndId(String account, String id) {
+		if(StringUtils.isNotBlank(id)){
+			return userDao.queryUserListByAccountAndId(account,id);
+		}else{
+			return userDao.queryUserByAccount(account);
+		}
 	}
 
 }

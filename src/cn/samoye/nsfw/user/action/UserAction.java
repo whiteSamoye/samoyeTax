@@ -168,6 +168,33 @@ public class UserAction extends ActionSupport {
 		}
 		return "list";
 	}
+	
+	//账户校验
+	public void verifyAccount(){
+		try {
+			//1.获取账号
+			if(user != null && StringUtils.isNotBlank(user.getAccount())){
+				//2.账号校验
+				List<User> userList = userService.queryUserListByAccountAndId(user.getAccount(),user.getId());
+				String result = "true";
+				if(userList != null && userList.size() > 0){
+					result = "false";
+				}
+				
+				//3.返回结果
+				HttpServletResponse response = ServletActionContext.getResponse();
+				//设置浏览器的内容类型问文件格式
+				response.setContentType("text/html");
+				//设置浏览器以附件下载的形式加载文件
+				ServletOutputStream ops = response.getOutputStream();
+				ops.write(result.getBytes());
+				ops.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	/**
 	 * ---------------------------------数据的封装
 	 */
