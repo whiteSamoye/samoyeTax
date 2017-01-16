@@ -24,6 +24,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
+import cn.samoye.core.exception.ServiceException;
 import cn.samoye.core.utils.ExcelUtils;
 import cn.samoye.nsfw.user.bean.User;
 import cn.samoye.nsfw.user.dao.UserDao;
@@ -56,7 +57,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> queryUserList() {
+	public List<User> queryUserList() throws ServiceException{
+		try {
+//			int i = 1/0;
+		} catch (Exception e) {
+			throw new ServiceException("业务层出错");
+		}
 		return userDao.queryObjectList();
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 
+import cn.samoye.core.exception.ServiceException;
 import cn.samoye.nsfw.user.bean.User;
 
 public interface UserService {
@@ -13,7 +14,7 @@ public interface UserService {
 	void update(User user);
 	void delete(Serializable id);
 	User queryUserById(Serializable id);
-	List<User> queryUserList();
+	List<User> queryUserList()throws ServiceException;
 	void exportExcelService(List<User> userList, ServletOutputStream ops);
 	void importExcel(File headImg, String headImgFileName);
 	User queryUserByAccount(User user);

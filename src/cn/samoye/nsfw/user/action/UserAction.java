@@ -21,25 +21,33 @@ import org.springframework.util.FileCopyUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import cn.samoye.core.action.BaseAction;
+import cn.samoye.core.exception.ActionException;
+import cn.samoye.core.exception.ServiceException;
+import cn.samoye.core.exception.SysException;
 import cn.samoye.nsfw.user.bean.User;
 import cn.samoye.nsfw.user.service.UserService;
 
-public class UserAction extends ActionSupport {
+public class UserAction extends BaseAction {
 	private final static Log log = LogFactory.getLog(UserAction.class);
 	@Resource
 	private UserService userService;
 	private List<User> userList;
 	private User user;
-	//批量删除
-	private String[] selectedRow;
+	
 	//头像上传
 	private File headImg;
 	private String headImgFileName;
 	private String headImgContentType;
 	//1.列表页面
-	public String listUI(){
-		userList = userService.queryUserList();
+	public String listUI()throws SysException{
+		try {
+			userList = userService.queryUserList();
+		} catch (ServiceException e) {
+			throw new ActionException("action处理: "+e.getMessage());
+		}
 		return "listUI";
+//		return "error";
 	}
 	//2.新增页面
 	public String addUI(){
@@ -211,12 +219,7 @@ public class UserAction extends ActionSupport {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public String[] getSelectedRow() {
-		return selectedRow;
-	}
-	public void setSelectedRow(String[] selectedRow) {
-		this.selectedRow = selectedRow;
-	}
+	
 	public File getHeadImg() {
 		return headImg;
 	}

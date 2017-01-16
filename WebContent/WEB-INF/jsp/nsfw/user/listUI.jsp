@@ -81,7 +81,7 @@
                         <s:iterator status="st"  value="userList">
                         	<!-- 奇数行显示背景,偶数行的话#st.even -->
                             <tr <s:if test="#st.odd">bgcolor="f8f8f8"</s:if>>
-                                <td align="center"><input type="checkbox" name="selectedRow" value='<s:property value='id'/>'/></td>
+                                <td align="center"><input type="checkbox" name="selectedRow" value="<s:property value='id'/>"/></td>
                                 <td align="center"><s:property value="name"/></td>
                                 <td align="center"><s:property value="account"/></td>
                                 <td align="center"><s:property value="dept"/></td>

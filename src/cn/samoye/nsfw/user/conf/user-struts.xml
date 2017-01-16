@@ -5,7 +5,7 @@
 
 <struts>
 
-	<package name="user-action" namespace="/nsfw" extends="struts-default">
+	<package name="user-action" namespace="/nsfw" extends="base-default">
 		<!-- 
 			Struts与spring整合方式:
 				1.action的创建交给spring的ioc完成,	[此时action默认是单例的]
