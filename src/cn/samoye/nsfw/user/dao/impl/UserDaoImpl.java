@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import cn.samoye.core.dao.impl.BaseDaoImpl;
 import cn.samoye.nsfw.user.bean.User;
+import cn.samoye.nsfw.user.bean.UserRole;
 import cn.samoye.nsfw.user.dao.UserDao;
 public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
@@ -35,6 +36,35 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 		Query query = this.getSession().createQuery("from User where account=?");
 		List list = query.setParameter(0, account).list();
 		return list;
+	}
+
+	@Override
+	public void saveUserRole(UserRole userRole) {
+		this.getHibernateTemplate().save(userRole);
+	}
+
+	@Override
+	public void deleteUserRoleByUser(UserRole userRole) {
+		this.getHibernateTemplate().delete(userRole);
+	}
+
+	@Override
+	public void updateUserRole(UserRole userRole) {
+		this.getHibernateTemplate().update(userRole);
+	}
+
+	@Override
+	public List<UserRole> queryUserRoleByUserId(String id) {
+		Query query = this.getSession().createQuery("from UserRole where userRoleId.userId=?");
+		query.setParameter(0, id);
+		return query.list();
+	}
+
+	@Override
+	public void deleteUserRoleByUserId(String id) {
+		Query query = this.getSession().createQuery("delete UserRole where userRoleId.userId=?");
+		query.setParameter(0, id);
+		query.executeUpdate();
 	}
 
 

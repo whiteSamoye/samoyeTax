@@ -26,7 +26,10 @@ import org.springframework.stereotype.Service;
 
 import cn.samoye.core.exception.ServiceException;
 import cn.samoye.core.utils.ExcelUtils;
+import cn.samoye.nsfw.role.bean.Role;
 import cn.samoye.nsfw.user.bean.User;
+import cn.samoye.nsfw.user.bean.UserRole;
+import cn.samoye.nsfw.user.bean.UserRoleId;
 import cn.samoye.nsfw.user.dao.UserDao;
 import cn.samoye.nsfw.user.service.UserService;
 import cn.samoye.test.utils.PoiUtils;
@@ -219,6 +222,37 @@ public class UserServiceImpl implements UserService {
 		}else{
 			return userDao.queryUserByAccount(account);
 		}
+	}
+
+	@Override
+	public void saveUserAndRole(User user, String... roleIds) {
+		userDao.save(user);
+		if(roleIds != null){
+			for(String roleId : roleIds){
+				userDao.saveUserRole(new UserRole(new UserRoleId(new Role(roleId),user.getId())));
+			}
+		}
+	}
+
+	@Override
+	public void updateUserAndRole(User user, String... roleIds) {
+		//1.更新用户信息
+		userDao.update(user);
+		//2.删除该用户对应的角色历史记录
+		userDao.deleteUserRoleByUserId(user.getId());
+		// TODO 此处为什么不能使用这种方式删除
+//		userDao.deleteUserRoleByUser(new UserRole(new UserRoleId(user.getId())));
+		//3.更新用户对应的角色
+		if(roleIds != null){
+			for(String roleId:roleIds){
+				userDao.saveUserRole(new UserRole(new UserRoleId(new Role(roleId),user.getId())));
+			}
+		}
+	}
+
+	@Override
+	public List<UserRole> queryUserRoleByUserId(String id) {
+		return userDao.queryUserRoleByUserId(id);
 	}
 
 }

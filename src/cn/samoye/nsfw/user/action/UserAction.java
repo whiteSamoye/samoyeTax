@@ -3,6 +3,7 @@ package cn.samoye.nsfw.user.action;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,16 +26,23 @@ import cn.samoye.core.action.BaseAction;
 import cn.samoye.core.exception.ActionException;
 import cn.samoye.core.exception.ServiceException;
 import cn.samoye.core.exception.SysException;
+import cn.samoye.nsfw.role.bean.Role;
+import cn.samoye.nsfw.role.service.RoleService;
 import cn.samoye.nsfw.user.bean.User;
+import cn.samoye.nsfw.user.bean.UserRole;
+import cn.samoye.nsfw.user.bean.UserRoleId;
 import cn.samoye.nsfw.user.service.UserService;
 
 public class UserAction extends BaseAction {
 	private final static Log log = LogFactory.getLog(UserAction.class);
 	@Resource
 	private UserService userService;
+	@Resource
+	private RoleService roleService;
+	
 	private List<User> userList;
 	private User user;
-	
+	private String[] roleIds;
 	//头像上传
 	private File headImg;
 	private String headImgFileName;
@@ -51,20 +59,44 @@ public class UserAction extends BaseAction {
 	}
 	//2.新增页面
 	public String addUI(){
+		try {
+			ServletActionContext.getContext().getContextMap().put("roleList", roleService.queryRoleList());
+		} catch (ServiceException e) {
+			log.error("addUI", e);
+		}
+		
 		return "addUI";
 	}
 	
 	//3.保存新增
 	public String add(){
-		String path = this.uploadPic();
-		user.setHeadImg(path);
-		userService.save(user);
+		if(user != null){
+			String path = this.uploadPic();
+			user.setHeadImg(path);
+//			userService.save(user);
+			userService.saveUserAndRole(user,roleIds);
+		}
+		
 		return "list";
 	}
 	//4.更新页面
 	public String updateUI(){
 		if(user != null && StringUtils.isNotBlank(user.getId())){
-			user = userService.queryUserById(user.getId());
+			try {
+				user = userService.queryUserById(user.getId());
+				ServletActionContext.getContext().getContextMap().put("roleList", roleService.queryRoleList());
+				//角色回显
+				List<UserRole> list = userService.queryUserRoleByUserId(user.getId());
+				if(list != null && list.size()>0){
+					roleIds = new String[list.size()];
+					for(int i =0;i<list.size();i++){
+						roleIds[i] = list.get(i).getUserRoleId().getRole().getRoleId();
+					}
+				}
+			} catch (Exception e) {
+				log.error("addUI", e);
+				e.printStackTrace();
+			}
 		}
 		return "updateUI";
 	}
@@ -80,7 +112,9 @@ public class UserAction extends BaseAction {
 			String path = this.uploadPic();
 			user.setHeadImg(path);
 		}
-		userService.update(user);
+//		userService.update(user);
+		
+		userService.updateUserAndRole(user,roleIds);
 		return "list";
 	}
 	/**
@@ -238,6 +272,10 @@ public class UserAction extends BaseAction {
 	public void setHeadImgContentType(String headImgContentType) {
 		this.headImgContentType = headImgContentType;
 	}
-	
-	
+	public String[] getRoleIds() {
+		return roleIds;
+	}
+	public void setRoleIds(String[] roleIds) {
+		this.roleIds = roleIds;
+	}
 }

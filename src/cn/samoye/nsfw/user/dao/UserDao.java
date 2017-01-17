@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.samoye.core.dao.BaseDao;
 import cn.samoye.nsfw.user.bean.User;
+import cn.samoye.nsfw.user.bean.UserRole;
 
 public interface UserDao extends BaseDao<User> {
 	/**
@@ -17,4 +18,14 @@ public interface UserDao extends BaseDao<User> {
 	List<User> queryUserListByAccountAndId(String account, String id);
 
 	List<User> queryUserByAccount(String account);
+
+	void saveUserRole(UserRole userRole);
+
+	void deleteUserRoleByUser(UserRole userRole);
+
+	void updateUserRole(UserRole userRole);
+
+	List<UserRole> queryUserRoleByUserId(String id);
+
+	void deleteUserRoleByUserId(String id);
 }

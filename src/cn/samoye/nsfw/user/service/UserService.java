@@ -8,6 +8,7 @@ import javax.servlet.ServletOutputStream;
 
 import cn.samoye.core.exception.ServiceException;
 import cn.samoye.nsfw.user.bean.User;
+import cn.samoye.nsfw.user.bean.UserRole;
 
 public interface UserService {
 	void save(User user);
@@ -20,4 +21,7 @@ public interface UserService {
 	User queryUserByAccount(User user);
 	boolean verifyAccount(String account);
 	List<User> queryUserListByAccountAndId(String account, String id);
+	void saveUserAndRole(User user, String... roleIds);
+	void updateUserAndRole(User user, String... roleIds);
+	List<UserRole> queryUserRoleByUserId(String id);
 }
