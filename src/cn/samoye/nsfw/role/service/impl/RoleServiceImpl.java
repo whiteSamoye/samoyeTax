@@ -23,7 +23,7 @@ public class RoleServiceImpl implements RoleService{
 
 	@Override
 	public void update(Role role) {
-		roleDao.deleteRolePrivilegeByRoleId(role.getRoleId());
+//		roleDao.deleteRolePrivilegeByRoleId(role.getRoleId());
 		roleDao.update(role);
 	}
 

@@ -91,6 +91,7 @@ public class RoleAction extends BaseAction {
 				Set<RolePrivilege> rolePrivileges = role.getRolePrivileges();
 				for(int i=0;i<privilegeCodes.length;i++){
 					//必须设置一方级联更新
+					//TODO hibernate执行更新操作时,bean中有集合对象时,直接更新不能正常进行
 					rolePrivileges.add(new RolePrivilege(new RolePrivilegeId(role,privilegeCodes[i])));
 				}
 				role.setRolePrivileges(rolePrivileges);
