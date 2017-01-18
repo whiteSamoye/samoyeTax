@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<package name="info-action" namespace="/nsfw" extends="base-default">
+		<!-- 
+			Struts与spring整合方式:
+				1.action的创建交给spring的ioc完成,	[此时action默认是单例的]
+					向ioc中注册action,通过注解或者是配置文件
+					这时class值为ioc容器中action bean的名称.class="testAction",
+					注意:应该开启action层的注解扫描
+				2.Struts自己管理action,[此时action默认是多例的]
+					这时,class值为:action类的全类名.class="cn.samoye.test.action.TestAction"
+					当Struts调用service时,Struts是通过Struts-spring插件包到springioc容器中找到对应的bean实例,并完成action属性的注入.
+				3.
+		 -->
+		<action name="info_*" class="cn.samoye.nsfw.info.action.InfoAction" method="{1}">
+			<result name="{1}" >/WEB-INF/jsp/nsfw/info/{1}.jsp</result>
+			<result name="list" type="redirectAction">
+				<param name="actionName">info_listUI</param>
+			</result>
+		</action>
+	</package>	
+
+</struts>
