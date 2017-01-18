@@ -23,6 +23,7 @@ import org.springframework.util.FileCopyUtils;
 import com.opensymphony.xwork2.ActionSupport;
 
 import cn.samoye.core.action.BaseAction;
+import cn.samoye.core.constant.Constant;
 import cn.samoye.core.exception.ActionException;
 import cn.samoye.core.exception.ServiceException;
 import cn.samoye.core.exception.SysException;
@@ -105,16 +106,24 @@ public class UserAction extends BaseAction {
 	 * @return
 	 */
 	public String update(){
-		if(headImg != null && StringUtils.isNotBlank(user.getHeadImg())){
-			this.deleteImg(user.getHeadImg());
+		if(user != null){
+			if(headImg != null && StringUtils.isNotBlank(user.getHeadImg())){
+				this.deleteImg(user.getHeadImg());
+			}
+			if(headImg != null){
+				String path = this.uploadPic();
+				user.setHeadImg(path);
+			}
+			User userSession = (User) ServletActionContext.getRequest().getSession().getAttribute(Constant.USER);
+			//当对当前用户进行更新时,刷新session
+			if(user.getAccount().equals(userSession.getAccount()) && user.getPassword().equals(userSession.getPassword())){
+				ServletActionContext.getRequest().getSession().setAttribute(Constant.USER, user);
+			}
+//			userService.update(user);
+			
+			userService.updateUserAndRole(user,roleIds);
 		}
-		if(headImg != null){
-			String path = this.uploadPic();
-			user.setHeadImg(path);
-		}
-//		userService.update(user);
 		
-		userService.updateUserAndRole(user,roleIds);
 		return "list";
 	}
 	/**
@@ -171,7 +180,6 @@ public class UserAction extends BaseAction {
 				//org.apache.commons.io.FileUtils;
 				FileUtils.copyFile(headImg, new File(imgPath,newFileName));
 				path = "user/"+newFileName;
-				System.out.println(path);
 			} catch (IOException e) {
 				log.error("用户id为: "+user.getId()+"上传图片出错", e);
 			}

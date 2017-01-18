@@ -28,4 +28,6 @@ public interface UserDao extends BaseDao<User> {
 	List<UserRole> queryUserRoleByUserId(String id);
 
 	void deleteUserRoleByUserId(String id);
+
+	List<User> queryUserByAccountAndPassword(String account, String password);
 }

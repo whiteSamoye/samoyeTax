@@ -2,6 +2,7 @@ package cn.samoye.nsfw.user.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -18,7 +19,7 @@ public class User implements Serializable{
 	private String mobile;
 	private Date birthday;
 	private String memo;
-	
+	private List<UserRole> userRole;
 	//状态常量:
 	// TODO 加final和不加final的区别
 	/**
@@ -122,6 +123,12 @@ public class User implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	
-	
+
+	public List<UserRole> getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(List<UserRole> userRole) {
+		this.userRole = userRole;
+	}
 }

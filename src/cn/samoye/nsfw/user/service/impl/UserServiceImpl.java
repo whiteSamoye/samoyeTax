@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Service;
 
 import cn.samoye.core.exception.ServiceException;
@@ -52,6 +53,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void delete(Serializable id) {
 		userDao.delete(id);
+		//同时删除该用户所对应的角色
+		userDao.deleteUserRoleByUserId((String)id);
 	}
 
 	@Override
@@ -253,6 +256,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserRole> queryUserRoleByUserId(String id) {
 		return userDao.queryUserRoleByUserId(id);
+	}
+
+	@Override
+	public List<User> loginCheck(String account, String password) {
+		return  userDao.queryUserByAccountAndPassword(account,password);
 	}
 
 }

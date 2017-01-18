@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constant {
+	public static  String USER = "SYS_USER";
 	/*------------------------------------------------------------------*/
 	/**
 	 * 1.本次没有做权限模块的增删改查,直接在jsp页面写死全限,后期权限名称改变后,修改比较麻烦.并且在数据库中直接保存数据权限名称会存在历史记录问题(后来命名和开始命名重名)

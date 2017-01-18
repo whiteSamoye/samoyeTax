@@ -3,9 +3,14 @@
 <head>
     <%@include file="/common/header.jsp"%>
     <title>信息发布管理</title>
+    <script type="text/javascript" charset="utf-8" src="${basePath }js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${basePath }js/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="${basePath }js/ueditor/lang/zh-cn/zh-cn.js"></script>
 
     <script>
-    	
+    	//uedit的初始化设置,相关配置案例在:ueditor/ueditor.config.js,必须引入ueditor/jsp/lib下jar到项目中
+   		window.UEDITOR_HOME_URL = "${basePath }js/ueditor/";
+    	var ue = UE.getEditor('editor');//textarea设置id editor
     </script>
 </head>
 <body class="rightBody">
@@ -37,15 +42,18 @@
         <tr>
             <td class="tdBg" width="200px">创建人：</td>
             <td>
-            
+            	<s:property value="#session.SYS_USER.name"/>
+            	<s:hidden name="info.creator" value="%{#session.SYS_USER.name}"/>
             </td>
             <td class="tdBg" width="200px">创建时间：</td>
             <td>
-             
+             	<s:date name="info.createTime" format="yyyy-MM-dd HH:mm"/>
+             	<s:hidden name="info.createTime"/>
             </td>
         </tr>
     </table>
-    
+    <!-- 默认信息状态为 发布 -->
+    <s:hidden name="info.state" value="1"/>
     <div class="tc mt20">
         <input type="submit" class="btnB2" value="保存" />
         &nbsp;&nbsp;&nbsp;&nbsp;

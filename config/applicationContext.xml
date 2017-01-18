@@ -90,6 +90,8 @@
 	
 	<import resource="cn/samoye/*/conf/*-spring.xml"/>
 	<import resource="cn/samoye/nsfw/*/conf/*-spring.xml"/>
+	<!-- 权限鉴定bean -->
+	<bean id="permissionCheck" class="cn.samoye.core.permission.impl.PermissionCheckImpl"></bean>
 </beans>
 
 

@@ -10,6 +10,16 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
+  <!-- 登录过滤器,应该放在Struts核心过滤器前面 -->
+	<filter>
+		<filter-name>loginFilter</filter-name>
+		<filter-class>cn.samoye.core.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+
   <!-- 引入spring监听器,监听应用服务的启动,当应用服务器启动时,实例化监听器 -->
   <listener>
   	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

@@ -22,7 +22,11 @@ function setClean(){
 	document.getElementById("account").value = "";
 	document.getElementById("password").value = "";
 }
-
+//子窗口嵌套问题,
+//出现原因:session过期后,点击左边的菜单后,经过登录过滤器,又返回到登录界面
+if(window != window.parent){
+	window.parent.location.reload(true);
+}
 </script>
 <style type="text/css">
 html { overflow-y: hidden;  }
@@ -82,7 +86,7 @@ html { overflow-y: hidden;  }
           </tr>
           <tr>
           	<td height="13">&nbsp;
-            	<span><div height=20 valign="middle" style="padding-left: 18px"><font color="red" id="errMsg"></font></div></span>
+            	<span><div height=20 valign="middle" style="padding-left: 18px"><font color="red" id="errMsg"><s:property value="loginResult"/> </font></div></span>
             </td>
           </tr>
           <tr>
