@@ -1,43 +1,29 @@
 package cn.samoye.nsfw.info.service.impl;
 
-import java.io.Serializable;
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cn.samoye.core.service.impl.BaseServiceImpl;
 import cn.samoye.nsfw.info.bean.Info;
 import cn.samoye.nsfw.info.dao.InfoDao;
 import cn.samoye.nsfw.info.service.InfoService;
+/**
+ * 通过set方法向父类中baseDao属性设置值
+ * @author samoye
+ *
+ */
 @Service("infoService")
-public class InfoServiceImpl implements InfoService{
+public class InfoServiceImpl extends BaseServiceImpl<Info> implements InfoService{
 
-	@Resource
+	
 	private InfoDao infoDao;
-	@Override
-	public void save(Info info) {
-		infoDao.save(info);
+	
+	@Resource
+	public void setInfoDao(InfoDao infoDao) {
+		super.setBaseDao(infoDao);
+		this.infoDao = infoDao;
 	}
-
-	@Override
-	public void update(Info info) {
-		infoDao.update(info);
-	}
-
-	@Override
-	public void delete(Serializable id) {
-		infoDao.delete(id);
-	}
-
-	@Override
-	public Info queryInfoById(Serializable id) {
-		return infoDao.queryObjectById(id);
-	}
-
-	@Override
-	public List<Info> queryInfoList() {
-		return infoDao.queryObjectList();
-	}
+	
 
 }

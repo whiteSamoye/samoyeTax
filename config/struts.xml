@@ -31,7 +31,7 @@
 		</global-results>
 		<!-- 全局异常映射 -->
 		<global-exception-mappings>
-			<exception-mapping result="sysError" exception="cn.samoye.core.exception.SysException"></exception-mapping>
+			<!-- <exception-mapping result="sysError" exception="cn.samoye.core.exception.SysException"></exception-mapping> -->
 			<exception-mapping result="input" exception="java.lang.Exception"></exception-mapping>
 		</global-exception-mappings>
 	</package>

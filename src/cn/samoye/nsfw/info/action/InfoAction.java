@@ -33,7 +33,7 @@ public class InfoAction extends BaseAction {
 		//加载分类集合
 		ActionContext.getContext().getContextMap().put("infoTypeMap", Info.INFO_TYPE_MAP);
 		try {
-			infoList = infoService.queryInfoList();
+			infoList = infoService.queryObjectList();
 		} catch (Exception e) {
 			throw new ActionException("action处理: "+e.getMessage());
 		}
@@ -60,7 +60,7 @@ public class InfoAction extends BaseAction {
 		//加载分类集合
 		ActionContext.getContext().getContextMap().put("infoTypeMap", Info.INFO_TYPE_MAP);
 		if (info != null && info.getInfoId() != null) {
-			info = infoService.queryInfoById(info.getInfoId());
+			info = infoService.queryObjectById(info.getInfoId());
 		}
 		return "updateUI";
 	}
@@ -81,7 +81,7 @@ public class InfoAction extends BaseAction {
 	 */
 	public String delete(){
 		if(info != null && StringUtils.isNotBlank(info.getInfoId())){
-			info = infoService.queryInfoById(info.getInfoId());
+			info = infoService.queryObjectById(info.getInfoId());
 			infoService.delete(info.getInfoId());
 		}
 		return "list";
@@ -101,7 +101,7 @@ public class InfoAction extends BaseAction {
 		try {
 			if(info != null){
 				//1、更新信息状态
-				Info tem = infoService.queryInfoById(info.getInfoId());
+				Info tem = infoService.queryObjectById(info.getInfoId());
 				tem.setState(info.getState());
 				infoService.update(tem);
 				

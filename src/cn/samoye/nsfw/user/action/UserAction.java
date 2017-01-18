@@ -50,11 +50,11 @@ public class UserAction extends BaseAction {
 	private String headImgContentType;
 	//1.列表页面
 	public String listUI()throws SysException{
-		try {
-			userList = userService.queryUserList();
-		} catch (ServiceException e) {
-			throw new ActionException("action处理: "+e.getMessage());
-		}
+		userList = userService.queryUserList();
+//		try {
+//		} catch (ServiceException e) {
+//			throw new ActionException("action处理: "+e.getMessage());
+//		}
 		return "listUI";
 //		return "error";
 	}
